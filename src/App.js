@@ -1,26 +1,38 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
+import List from './components/List'
+import { increment, decrement } from './actions/actionCreator';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  increment = () => {
+    this.props.increment();
+  }
+
+  decrement = () => {
+    this.props.decrement();
+  }
+  
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <List number={this.props.count} />
+          <div> 
+            <button style={{padding: '4px 13px'}} onClick={this.decrement}>-</button>
+            <button style={{padding: '4px 10px'}} onClick={this.increment}>+</button>
+          </div>
+        </header>
+      </div>
+    );
+  }
 }
 
-export default App;
+export default connect(function(state) {
+  return {
+    count: state.count
+  }
+}, { increment, decrement })(App);
